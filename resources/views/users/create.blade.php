@@ -1,122 +1,131 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Aula Laravel</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <style>
+        :root {
+            --rosa-claro: #f6a0b5;
+            --lilas: #b3a3d9;
+            --verde-agua: #93b3ff;
+            --amarelo-claro: #f9f6a3;
+            --azul-bebe: #d8f4e0;
+        }
 
-  <!-- Fonte Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+        body {
+            background-color: var(--azul-bebe);
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            color: #4a4a4a;
+        }
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+        h1 {
+            text-align: center;
+            color: var(--rosa-claro);
+        }
 
-    body {
-      font-family: 'Roboto', sans-serif;
-      background: linear-gradient(135deg, #e9d8fd, #d6bcfa); /* lilás claro para violeta claro */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      padding: 20px;
-    }
+        .form-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            margin: 0 auto;
+        }
 
-    form {
-      background: #ffffff;
-      padding: 40px 35px;
-      border-radius: 5px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 380px;
-    }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--lilas);
+        }
 
-    h1 {
-      text-align: center;
-      background: linear-gradient(90deg, #9f7aea, #805ad5); /* degradê violeta */
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-weight: 700;
-      font-size: 2.2rem;
-      margin-bottom: 30px;
-    }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #f9f9f9;
+        }
 
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
-      color: #5a4a75; /* violeta escuro */
-    }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--rosa-claro);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
 
-    input[type="text"],
-    input[type="email"],
-    input[type="password"] {
-      width: 100%;
-      padding: 14px 16px;
-      margin-bottom: 22px;
-      border: 2px solid #e0cfff; /* borda lilás clara */
-      border-radius: 5px;
-      font-size: 1rem;
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    }
+        button:hover {
+            background-color: var(--lilas);
+        }
 
-    input[type="text"]:focus,
-    input[type="email"]:focus,
-    input[type="password"]:focus {
-      border-color: #b794f4; /* lilás */
-      box-shadow: 0 0 8px rgba(183, 148, 244, 0.5);
-      outline: none;
-    }
+        .error-list {
+            color: red;
+            margin-bottom: 15px;
+        }
 
-    button {
-      width: 100%;
-      background: #9f7aea; /* botão violeta */
-      color: white;
-      padding: 14px 0;
-      border: none;
-      border-radius: 4px;
-      font-size: 1.2rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      box-shadow: 0 4px 12px rgba(159, 122, 234, 0.5);
-    }
+        .link-container {
+            text-align: center;
+            margin-top: 20px;
+        }
 
-    button:hover {
-      background: #805ad5; /* botão mais escuro no hover */
-      box-shadow: 0 6px 16px rgba(128, 90, 213, 0.6);
-    }
+        .link-container a {
+            background-color: var(--verde-agua);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
 
-    @media (max-width: 420px) {
-      form {
-        padding: 30px 20px;
-        width: 100%;
-      }
-
-      h1 {
-        font-size: 1.8rem;
-      }
-    }
-  </style>
+        .link-container a:hover {
+            background-color: var(--amarelo-claro);
+        }
+    </style>
 </head>
 <body>
-  <form action="{{ route('users.store') }}" method="POST">
-    @csrf
 
-    <h1>Cadastrar Usuários</h1>
+    <h1>Cadastro de Usuário</h1>
 
-    <label for="name">Nome:</label>
-    <input type="text" name="name" id="name" placeholder="Digite o seu nome" value="{{ old('name') }}" required />
+    @if($errors->any())
+        <div class="error-list">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-    <label for="email">Email:</label>
-    <input type="email" name="email" id="email" placeholder="Digite o seu email" value="{{ old('email') }}" required />
+    <div class="form-container">
+        <form action="{{ route('register.store') }}" method="POST">
+            @csrf
 
-    <label for="password">Senha:</label>
-    <input type="password" name="password" id="password" placeholder="Digite a sua senha" value="{{ old('password') }}" required />
+            <label for="name">Nome:</label>
+            <input type="text" name="name" value="{{ old('name') }}" required><br>
 
-    <button type="submit">Cadastrar</button>
-  </form>
+            <label for="email">Email:</label>
+            <input type="email" name="email" value="{{ old('email') }}" required><br>
+
+            <label for="password">Senha:</label>
+            <input type="password" name="password" required><br>
+
+            <label for="password_confirmation">Confirmar Senha:</label>
+            <input type="password" name="password_confirmation" required><br>
+
+            <button type="submit">Cadastrar</button>
+        </form>
+    </div>
+
+    <div class="link-container">
+        <p>Já tem uma conta?</p>
+        <a href="{{ route('login') }}">Entrar</a>
+    </div>
+
 </body>
 </html>
